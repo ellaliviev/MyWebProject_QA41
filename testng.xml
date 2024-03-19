@@ -6,6 +6,7 @@
         <classes>
             <class name="tests.PhoneBookTest">
                 <methods>
+                    <include name="deleteContactApproachTwo"/>
                     <include name="loginOfAnExistingUserAddContact"/>
                 </methods>
             </class>
@@ -14,9 +15,10 @@
     <test name="ChromeTests">
         <parameter name="browser" value="chrome"/>
         <classes>
+
             <class name="tests.PhoneBookTest">
                 <methods>
-                    <include name="loginOfAnExistingUserAddContact"/>
+                    <include name="deleteContactApproachTwo"/>
                 </methods>
             </class>
         </classes>
