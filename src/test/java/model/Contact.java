@@ -1,8 +1,9 @@
 package model;
 
+import java.io.*;
 import java.util.Objects;
 
-public class Contact {
+public class Contact implements Serializable {
 
     private String name;
     private String lastName;
@@ -59,8 +60,7 @@ public class Contact {
         this.description = description;
     }
 
-    public Contact(String name, String lastName, String phone, String email,
-                   String address, String description) {
+    public Contact(String name, String lastName, String phone, String email, String address, String description) {
         this.name = name;
         this.lastName = lastName;
         this.phone = phone;
@@ -88,17 +88,37 @@ public class Contact {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Contact contact)) return false;
-        return Objects.equals(getName(), contact.getName()) &&
-                Objects.equals(getLastName(), contact.getLastName()) &&
-                Objects.equals(getPhone(), contact.getPhone()) &&
-                Objects.equals(getEmail(), contact.getEmail()) &&
-                Objects.equals(getAddress(), contact.getAddress()) &&
-                Objects.equals(getDescription(), contact.getDescription());
+        return Objects.equals(getName(), contact.getName()) && Objects.equals(getLastName(),
+                contact.getLastName()) && Objects.equals(getPhone(),
+                contact.getPhone()) && Objects.equals(getEmail(),
+                contact.getEmail()) && Objects.equals(getAddress(),
+                contact.getAddress()) && Objects.equals(getDescription(), contact.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getLastName(), getPhone(),
-                getEmail(), getAddress(), getDescription());
+        return Objects.hash(getName(), getLastName(), getPhone(), getEmail(), getAddress(), getDescription());
+    }
+    // сериализация объекта типа Contact в файл с помощью класса ObjectOutputStream.
+    public  static void serializeContact(Contact contact, String fileName) throws IOException {
+        // Объявление метода serializeContact, который принимает два параметра: объект типа Contact,
+        // который мы хотим сериализовать, и строковое имя файла, в который мы хотим сохранить сериализованный объект.
+        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(fileName));
+        // Создание объекта ObjectOutputStream, который используется для записи объектов Java в поток вывода.
+        // Мы передаем ему поток вывода файла (FileOutputStream), указывая имя файла fileName,
+        // который будет использоваться для сохранения данных.
+        outputStream.writeObject(contact); // Метод writeObject сериализует объект и записывает его в поток.
+        // После этого объект будет сохранен в файле, указанном в fileName.
+    }
+    public static Contact desiarializeContact(String fileName){
+        try (
+                ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(fileName));){
+            return (Contact) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error during contact desiarilization " );
+            return null;
+        }
+
+
     }
 }
